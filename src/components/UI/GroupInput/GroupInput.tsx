@@ -1,13 +1,13 @@
 import Input from "../Input/Input"
 interface GroupInputProps{
-    label:string
+    label:string,
+    type:string
 }
-export default function GroupInput({label}: GroupInputProps):React.ReactElement{
+export default function GroupInput({label,type}: GroupInputProps):React.ReactElement{
     return(
         <div>
-            <label htmlFor="">{label}</label>
-            <Input 
-            />
+            <label>{label}</label>
+            <Input type={type} />
         </div>
     )
 }
