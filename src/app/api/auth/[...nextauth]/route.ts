@@ -1,6 +1,6 @@
 import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { IUser } from "../interfaces/userInterface";
+import { IUser } from "../../interfaces/userInterface";
 
 export default NextAuth({
     providers: [
@@ -11,7 +11,8 @@ export default NextAuth({
                 email: {label: "Email", type: "email", placeholder: "example@gmail.com"},
                 password: {label: "Password", type: "password"}
             },
-            async authorize(credentials:Record<"email" | "password", string> | any):Promise<null | User>{
+
+            async authorize(credentials:Record<"email" | "password", string> | any):Promise<null | User >{
                 const {email,password} = credentials || {}
                 const userLogin = await login(email,password);
                 const {user,token} = userLogin;
@@ -19,7 +20,8 @@ export default NextAuth({
                 return user;
             }
         })
-    ]
+    ],
+    secret: process.env.NEXTAUTH_SECRET
 });
 
 async function login(email:string, password: string){
@@ -32,6 +34,7 @@ async function login(email:string, password: string){
             body: JSON.stringify({email,password})
         });
         if(!response.ok) throw new Error("Error with the response");
+        console.log(response);
         return await response.json();
     }catch(error:unknown){
         console.log("Error with the login")

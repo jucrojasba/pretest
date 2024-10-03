@@ -4,6 +4,7 @@ import Button from "../UI/Button/Button";
 import { IFormDataLogin } from "@/interfaces/formDataInterface";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+import { signIn } from "next-auth/react";
 export default function FormLogin():React.ReactElement{
     const traduction = useTranslations("LoginView");
     const initialFormData: IFormDataLogin = {
@@ -11,9 +12,14 @@ export default function FormLogin():React.ReactElement{
         password: ""
     };
     const [formData, setFormData] = useState<IFormDataLogin>(initialFormData);
-    const handleLogin = (e:React.FormEvent):void =>{
+    const handleLogin = async(e:React.FormEvent):Promise<void> =>{
         e.preventDefault();
-        console.log(formData)
+        const res = await signIn("credentials", {
+            redirect: false,
+            email: formData.email,
+            password: formData.password,
+        });
+        console.log("res", res);
     };
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>):void =>{
         const {name,value} = e.target;
