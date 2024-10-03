@@ -5,8 +5,10 @@ import { IFormDataLogin } from "@/interfaces/formDataInterface";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { signIn } from "next-auth/react";
+import { useSession } from "next-auth/react";
 export default function FormLogin():React.ReactElement{
     const traduction = useTranslations("LoginView");
+    const {data:session} = useSession();
     const initialFormData: IFormDataLogin = {
         email: "",
         password: ""
@@ -20,6 +22,7 @@ export default function FormLogin():React.ReactElement{
             password: formData.password,
         });
         console.log("res", res);
+        console.log(session?.user);
     };
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>):void =>{
         const {name,value} = e.target;

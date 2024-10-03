@@ -2,7 +2,7 @@ import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { IUser } from "../../interfaces/userInterface";
 
-export default NextAuth({
+const handler =  NextAuth({
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -12,11 +12,12 @@ export default NextAuth({
                 password: {label: "Password", type: "password"}
             },
 
-            async authorize(credentials:Record<"email" | "password", string> | any):Promise<null | User >{
+            async authorize(credentials:Record<"email" | "password", string> | undefined):Promise<User | null>{
                 const {email,password} = credentials || {}
-                const userLogin = await login(email,password);
-                const {user,token} = userLogin;
-                if(!user)return null;
+                console.log(email,password);
+                const userLogin = await login(email!,password!);
+                const {user} = userLogin;
+                if(!user) return null;
                 return user;
             }
         })
@@ -40,3 +41,5 @@ async function login(email:string, password: string){
         console.log("Error with the login")
     }; 
 }
+
+export {handler as GET, handler as POST}
