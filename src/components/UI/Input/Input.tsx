@@ -1,10 +1,13 @@
 import React from "react"
 
 interface InputProps{
-    type: string
+    type: string,
+    name:string,
+    value:string,
+    onChange: (e:React.ChangeEvent<HTMLInputElement>) =>void
 }
-export default function Input({type}: InputProps):React.ReactElement{
+export default function Input({type, onChange,name,value}: InputProps):React.ReactElement{
     return(
-        <input type={type} />
+        <input type={type} onChange={(e)=>onChange(e)} name={name} value={value} />
     )
 }

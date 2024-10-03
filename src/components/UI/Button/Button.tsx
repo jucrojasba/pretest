@@ -1,8 +1,9 @@
 interface ButtonProps{
-    label:string
+    label:string,
+    onClick: (e:React.FormEvent) =>void
 }
-export default function Button({label}: ButtonProps):React.ReactElement{
+export default function Button({label, onClick}: ButtonProps):React.ReactElement{
     return(
-        <button>{label}</button>
+        <button onClick={onClick}>{label}</button>
     )
 }
