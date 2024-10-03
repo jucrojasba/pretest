@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale,getMessages } from "next-intl/server";
+import React from "react";
 import "./globals.css";
 
 const geistSans = localFont({
