@@ -1,6 +1,8 @@
 {
     "LoginView": {
         "title": "Login",
-        "description": "description"
+        "email": "Email",
+        "password": "Password",
+        "buttonLogin": "Login" 
     }
 }

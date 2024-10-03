@@ -1,16 +1,16 @@
 "use client"
 import GroupInput from "../UI/GroupInput/GroupInput";
 import Button from "../UI/Button/Button";
-import { IFormData } from "@/interfaces/FormDataInterface";
+import { IFormDataLogin } from "@/interfaces/formDataInterface";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 export default function FormLogin():React.ReactElement{
     const traduction = useTranslations("LoginView");
-    const initialFormData: IFormData = {
+    const initialFormData: IFormDataLogin = {
         email: "",
         password: ""
     };
-    const [formData, setFormData] = useState<IFormData>(initialFormData);
+    const [formData, setFormData] = useState<IFormDataLogin>(initialFormData);
     const handleLogin = (e:React.FormEvent):void =>{
         e.preventDefault();
         console.log(formData)
@@ -25,9 +25,9 @@ export default function FormLogin():React.ReactElement{
     return(
         <form>
             <h2>{traduction("title")}</h2>
-            <GroupInput label="Email" type="email" onChange={(e)=>handleChange(e)} name="email" value={formData.email} />
-            <GroupInput label="Password" type="password" onChange={(e)=>handleChange(e)} name="password" value={formData.password} />
-            <Button label="Login" onClick={(e)=>handleLogin(e)} />
+            <GroupInput label={traduction("email")} type="email" onChange={(e)=>handleChange(e)} name="email" value={formData.email} />
+            <GroupInput label={traduction("password")} type="password" onChange={(e)=>handleChange(e)} name="password" value={formData.password} />
+            <Button label={traduction("buttonLogin")} onClick={(e)=>handleLogin(e)} />
         </form>
     )
 }
