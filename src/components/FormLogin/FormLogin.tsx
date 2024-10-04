@@ -21,7 +21,6 @@ export default function FormLogin():React.ReactElement{
             email: formData.email,
             password: formData.password,
         });
-        console.log("res", res);
         console.log(session?.user);
     };
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>):void =>{

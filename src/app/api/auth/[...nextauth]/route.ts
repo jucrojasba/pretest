@@ -1,6 +1,7 @@
 import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { IUser } from "../../interfaces/userInterface";
+import { cookies } from "next/headers";
 
 const handler =  NextAuth({
     providers: [
@@ -12,16 +13,49 @@ const handler =  NextAuth({
                 password: {label: "Password", type: "password"}
             },
 
-            async authorize(credentials:Record<"email" | "password", string> | undefined):Promise<User | null>{
+            async authorize(credentials:Record<"email" | "password", string> | undefined):Promise<IUser | null>{
                 const {email,password} = credentials || {}
-                console.log(email,password);
+                console.log(email,password)
+
                 const userLogin = await login(email!,password!);
-                const {user} = userLogin;
+                const {user,token} = userLogin;
                 if(!user) return null;
-                return user;
+                return {
+                    ...user,
+                    token
+                }
             }
         })
     ],
+    callbacks: {
+        async jwt({token, user}){
+            const cookieStore = cookies();
+            if(user){
+                token.name = user.name!;
+                token.email = user.email!;
+                token.tokenBack = user.token!;
+                token.tokenFrontend = cookieStore.get("next-auth.session-token")?.value as string;
+                console.log("tokenback", token.tokenBack)
+            }
+            
+            return token
+        },
+
+        async session({session, token}){
+            const tokens = {
+                tokenBack: token.tokenBack,
+                tokenFrontend: token.tokenFrontend
+            }
+            console.log(tokens, "test back")
+            return {
+                ...session,
+                user: {
+                    ...session.user,
+                    tokens
+                }
+            }
+        }
+    },
     secret: process.env.NEXTAUTH_SECRET
 });
 
